@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -24,6 +25,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Suppress WebSocket HMR errors in development - load before other scripts */}
+        {process.env.NODE_ENV === 'development' && (
+          <Script
+            src="/suppress-ws-errors.js"
+            strategy="beforeInteractive"
+          />
+        )}
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
